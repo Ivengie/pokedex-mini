@@ -1,74 +1,104 @@
-* {
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&display=swap');
+
+* { box-sizing: border-box; }
+
+:root {
+  --bg:        #0d0d1a;
+  --surface:   #16162a;
+  --surface2:  #1e1e38;
+  --border:    #2a2a4a;
+  --red:       #e63946;
+  --red-dark:  #b52d38;
+  --text:      #e8e8f0;
+  --text-dim:  #8888aa;
+  --glow:      rgba(230, 57, 70, 0.35);
 }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  background: #f5f5f5;
-  color: #222;
+  font-family: 'Chakra Petch', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
 }
 
+/* ── Scanline overlay ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.06) 2px,
+    rgba(0,0,0,0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Layout ── */
 .app {
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
-  padding: 32px 16px;
+  padding: 24px 16px 60px;
 }
 
-h1 {
-  text-align: center;
-  color: #cc0000;
-}
-
-.status {
-  text-align: center;
-  font-size: 18px;
-  color: #555;
-}
-
-.status-error {
-  color: #b00020;
-}
-
-.pokemon-list {
-  list-style: none;
-  padding: 0;
-  margin: 24px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.pokemon-list-item {
+/* ── Header ── */
+.app-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: white;
-  border-radius: 8px;
-  padding: 12px 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border);
 }
 
-.pokemon-sprite {
+.app-title-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.pokeball-icon {
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
-  background: #f0f0f0;
-  border-radius: 6px;
+  animation: spin-slow 6s linear infinite;
+  filter: drop-shadow(0 0 6px var(--glow));
 }
 
-.pokemon-id {
-  font-family: monospace;
-  color: #888;
-  min-width: 48px;
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
-.pokemon-name {
-  font-weight: 600;
-  text-transform: capitalize;
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: linear-gradient(90deg, var(--red), #ff8fa3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.search {
-  margin-bottom: 24px;
+.header-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
+
+/* ── Search ── */
+.search { margin-bottom: 20px; }
 
 .search-form {
   display: flex;
@@ -77,113 +107,472 @@ h1 {
 
 .search-input {
   flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: 'Chakra Petch', sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.search-input::placeholder { color: var(--text-dim); }
+
+.search-input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--glow);
+}
+
+.search-hint {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+}
+
+.search-hint kbd {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.7rem;
 }
 
 .search-button {
-  padding: 8px 16px;
+  padding: 10px 18px;
   border: none;
-  border-radius: 6px;
-  background: #cc0000;
+  border-radius: 8px;
+  background: var(--red);
   color: white;
-  font-weight: 600;
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
   cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .search-button:hover {
-  background: #a00000;
+  background: var(--red-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--glow);
 }
 
-.search-result {
+.search-button:active { transform: translateY(0); }
+
+/* ── Type filter chips ── */
+.type-filters {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-  background: white;
-  border-radius: 8px;
-  padding: 12px 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
-.pokemon-types {
-  color: #666;
+.type-chip {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1.5px solid transparent;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: capitalize;
-  margin: 4px 0 0;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+  color: #fff;
 }
 
+.type-chip:hover { transform: scale(1.08); }
 
+.type-chip.active {
+  box-shadow: 0 0 0 2px #fff, 0 0 12px currentColor;
+  transform: scale(1.08);
+}
 
+.type-chip:not(.active) { opacity: 0.55; }
 
+/* ── Status messages ── */
+.status {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-dim);
+  padding: 24px 0;
+}
+
+.status-error { color: var(--red); }
+
+/* ── Pokéball spinner ── */
+.spinner-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 0;
+}
+
+.pokeball-spinner {
+  width: 52px;
+  height: 52px;
+  animation: bounce-spin 1s ease-in-out infinite;
+}
+
+@keyframes bounce-spin {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  40%       { transform: translateY(-18px) rotate(180deg); }
+  80%       { transform: translateY(0) rotate(360deg); }
+}
+
+.spinner-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+/* ── Pokémon list ── */
+.pokemon-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pokemon-list-item { list-style: none; }
 
 .pokemon-link {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: white;
-  border-radius: 8px;
-  padding: 12px 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
   text-decoration: none;
   color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.pokemon-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: 12px;
 }
 
 .pokemon-link:hover {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transform: translateX(4px) scale(1.01);
+  border-color: var(--card-accent, var(--red));
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px var(--card-accent, var(--red));
+}
+
+.pokemon-link:hover::before { opacity: 0.06; }
+
+.pokemon-link:hover .pokemon-sprite {
+  animation: sprite-bounce 0.5s ease;
+}
+
+@keyframes sprite-bounce {
+  0%, 100% { transform: translateY(0); }
+  35%       { transform: translateY(-8px) scale(1.1); }
+  65%       { transform: translateY(-3px); }
+}
+
+.pokemon-sprite {
+  flex-shrink: 0;
+  image-rendering: pixelated;
+  background: var(--surface2);
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.pokemon-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pokemon-id {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.pokemon-name {
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: capitalize;
+  line-height: 1.2;
+}
+
+.pokemon-types {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+/* ── Type badge ── */
+.type-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.6;
+}
+
+/* ── Load more ── */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.load-more-btn {
+  padding: 10px 32px;
+  border: 2px solid var(--red);
+  border-radius: 30px;
+  background: transparent;
+  color: var(--red);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.load-more-btn:hover {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 0 20px var(--glow);
+  transform: translateY(-2px);
+}
+
+.load-more-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Detail page ── */
+.detail-page {
+  animation: fade-in 0.35s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .back-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 16px;
-  color: #cc0000;
+  color: var(--red);
   text-decoration: none;
   font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  transition: gap 0.2s, color 0.2s;
 }
 
-.back-link:hover {
-  text-decoration: underline;
-}
+.back-link:hover { gap: 10px; color: #ff8fa3; }
 
-.detail-page {
+.detail-hero {
+  position: relative;
+  border-radius: 20px;
+  padding: 28px 20px 20px;
   text-align: center;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.detail-page img {
-  margin: 0 auto;
+.detail-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background: radial-gradient(ellipse at 50% 0%, currentColor 0%, transparent 70%);
 }
 
-.stat-list {
-  list-style: none;
-  padding: 0;
-  margin: 16px auto 0;
-  max-width: 240px;
-  text-align: left;
+.detail-artwork {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6));
+  animation: float 3s ease-in-out infinite;
+  image-rendering: auto;
 }
 
-.stat-list li {
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+.detail-id {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.15em;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.detail-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.detail-types {
   display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
 }
 
-.stat-name {
+/* ── Stats ── */
+.stats-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.stats-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 0 16px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.stat-row:last-child { margin-bottom: 0; }
+
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
   text-transform: capitalize;
-  color: #666;
+  color: var(--text-dim);
+  min-width: 90px;
+  letter-spacing: 0.04em;
+}
+
+.stat-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--surface2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  animation: bar-grow 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: left;
+}
+
+@keyframes bar-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 .stat-value {
-  font-weight: 600;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  min-width: 32px;
+  text-align: right;
+  color: var(--text);
 }
 
-
-.app-header {
-  margin-bottom: 8px;
+/* ── Prev / Next nav ── */
+.detail-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.app-title-link {
+.nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   text-decoration: none;
-  color: inherit;
+  color: var(--text);
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  cursor: pointer;
 }
+
+.nav-btn:hover {
+  border-color: var(--red);
+  box-shadow: 0 0 12px var(--glow);
+  transform: translateY(-2px);
+}
+
+.nav-btn.next { justify-content: flex-end; text-align: right; }
+
+.nav-btn-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.nav-btn-name {
+  text-transform: capitalize;
+  font-size: 0.9rem;
+}
+
+/* ── No results ── */
+.no-results {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-dim);
+}
+
+.no-results-emoji { font-size: 3rem; margin-bottom: 12px; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
